@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>skeleton</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <canvas id="canvas" width="400" height="400"></canvas>
+    <script src="./../libs/utils.js"></script>
+    <script src="./../libs/ball.js"></script>
+    <script>
+        window.onload = function () {
+            // code goes here
+            var canvas = document.getElementById('canvas'),
+                context = canvas.getContext('2d'),
+                ball = new Ball(),
+                angleX = 0,
+                angleY = 0,
+                range = 50,
+                centerX = canvas.width / 2,
+                centerY = canvas.height / 2,
+                xspeed = 0.07,
+                yspeed = 0.11;
+
+            (function drawFrame () {
+                window.requestAnimationFrame(drawFrame, canvas);
+                context.clearRect(0, 0, canvas.width, canvas.height);
+                ball.x = centerX + Math.sin(angleX) * range;
+                ball.y = centerY + Math.sin(angleY) * range;
+                angleX += xspeed;
+                angleY += yspeed;
+                ball.draw(context);
+            }());
+        }
+    </script>
+</body>
+</html>
