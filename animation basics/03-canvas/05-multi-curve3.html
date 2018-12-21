@@ -33,6 +33,8 @@
             ctrlPoint1.y = (points[0].y + points[numPoints-1].y) / 2;
             context.beginPath();
             context.moveTo(ctrlPoint1.x, ctrlPoint1.y);
+            context.fillStyle = "#ff0000";
+            context.strokeStyle = "#0000ff";
             //curve through the rest, stopping at each midpoint
             for (i = 0; i < numPoints - 1; i++) {
                 ctrlPoint.x = (points[i].x + points[i+1].x) / 2;
@@ -44,6 +46,7 @@
             context.quadraticCurveTo(points[i].x, points[i].y,
                 ctrlPoint1.x, ctrlPoint1.y);
             context.stroke();
+            context.fill();
         }
     </script>
 </body>
