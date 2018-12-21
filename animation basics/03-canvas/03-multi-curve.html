@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>skeleton</title>
+    <link rel="stylesheet" href="./../libs/style.css">
+</head>
+<body>
+    <canvas id="canvas" width="400" height="400"></canvas>
+    <aside>Move mouse on canvas element.</aside>
+    <script src="./../libs/utils.js"></script>
+    <script src="./../libs/ball.js"></script>
+    <script>
+        window.onload = function () {
+            // code goes here
+            var canvas = document.getElementById('canvas'),
+                context = canvas.getContext('2d'),
+                points = [],
+                numPoints = 9;
+
+            //array of random point objects
+            for (var i = 0; i < numPoints; i++) {
+                points.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height
+                });
+            }
+            console.log(points);
+            //move to the first point
+            context.beginPath();
+            context.moveTo(points[0].x, points[0].y);
+            //and loop through each successive pair
+            for (i = 1; i < numPoints; i += 2) {
+                context.quadraticCurveTo(points[i].x, points[i].y,
+                    points[i+1].x, points[i+1].y);
+            }
+            context.quadraticCurveTo(points[numPoints-1].x, points[numPoints-1].y,
+                points[0].x, points[0].y);
+            context.stroke();
+        }
+    </script>
+</body>
+</html>

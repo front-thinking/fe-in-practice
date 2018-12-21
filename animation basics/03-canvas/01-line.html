@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>skeleton</title>
+    <link rel="stylesheet" href="./../libs/style.css">
+</head>
+<body>
+    <canvas id="canvas" width="400" height="400"></canvas>
+    <script src="./../libs/utils.js"></script>
+    <script src="./../libs/ball.js"></script>
+    <script>
+        window.onload = function () {
+            // code goes here
+            var canvas = document.getElementById('canvas'),
+                context = canvas.getContext('2d'),
+                mouse = utils.captureMouse(canvas);
+            canvas.addEventListener('mousedown', function () {
+                context.beginPath();
+                context.moveTo(mouse.x, mouse.y);
+                canvas.addEventListener('mousemove', onMouseMove, false);
+            }, false);
+            canvas.addEventListener('mouseup', function () {
+                canvas.removeEventListener('mousemove', onMouseMove, false);
+            }, false);
+            function onMouseMove () {
+                context.lineTo(mouse.x, mouse.y);
+                context.stroke();
+            }
+        }
+    </script>
+</body>
+</html>
