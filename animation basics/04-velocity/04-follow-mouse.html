@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>skeleton</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <canvas id="canvas" width="400" height="400"></canvas>
+    <script src="./../libs/utils.js"></script>
+    <script src="./../libs/arrow.js"></script>
+    <script>
+        window.onload = function () {
+            // code goes here
+            var canvas = document.getElementById('canvas'),
+                context = canvas.getContext('2d'),
+                mouse = utils.captureMouse(canvas),
+                arrow = new Arrow(),
+                speed = 3;
+
+            (function drawFrame () {
+                window.requestAnimationFrame(drawFrame, canvas);
+                context.clearRect(0, 0, canvas.width, canvas.height);
+
+                var dx = mouse.x - arrow.x,
+                    dy = mouse.y - arrow.y,
+                    angle = Math.atan2(dy, dx),
+                    vx = Math.cos(angle) * speed,
+                    vy = Math.sin(angle) * speed;
+
+                arrow.rotation = angle; //radians
+                arrow.x += vx;
+                arrow.y += vy;
+                arrow.draw(context);
+            }());
+        }
+    </script>
+</body>
+</html>

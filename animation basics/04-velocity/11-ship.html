@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>skeleton</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        #canvas {
+            background-color: #000000;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="canvas" width="400" height="400"></canvas>
+    <script src="./../libs/utils.js"></script>
+    <script src="./../libs/ship.js"></script>
+    <script>
+        window.onload = function () {
+            // code goes here
+            var canvas = document.getElementById('canvas'),
+                context = canvas.getContext('2d'),
+                ship = new Ship(),
+                vr = 0,
+                vx = 0,
+                vy = 0,
+                thrust = 0;
+
+            ship.x = canvas.width / 2;
+            ship.y = canvas.height / 2;
+
+            window.addEventListener('keydown', function (event) {
+                switch (event.keyCode) {
+                    case 37:      //left
+                        vr = -3;
+                        break;
+                    case 39:      //right
+                        vr = 3;
+                        break;
+                    case 38:      //up
+                        thrust = 0.05;
+                        ship.showFlame = true;
+                        break;
+                }
+            }, false);
+
+            window.addEventListener('keyup', function () {
+                vr = 0;
+                thrust = 0;
+                ship.showFlame = false;
+            }, false);
+
+            (function drawFrame () {
+                window.requestAnimationFrame(drawFrame, canvas);
+                context.clearRect(0, 0, canvas.width, canvas.height);
+
+                ship.rotation += vr * Math.PI / 180;
+                var angle = ship.rotation, //in radians
+                    ax = Math.cos(angle) * thrust,
+                    ay = Math.sin(angle) * thrust;
+
+                vx += ax;
+                vy += ay;
+                ship.x += vx;
+                ship.y += vy;
+                ship.draw(context);
+            }());
+        }
+    </script>
+</body>
+</html>

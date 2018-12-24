@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>skeleton</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <canvas id="canvas" width="400" height="400"></canvas>
+    <script src="./../libs/utils.js"></script>
+    <script src="./../libs/ball.js"></script>
+    <script>
+        window.onload = function () {
+            // code goes here
+            var canvas = document.getElementById('canvas'),
+                context = canvas.getContext('2d'),
+                ball = new Ball(),
+                vx = 0,
+                vy = 0,
+                ax = 0,
+                ay = 0,
+                gravity = 0.02;
+
+            ball.x = canvas.width / 2;
+            ball.y = 0;
+
+            window.addEventListener('keydown', function (event) {
+                switch (event.keyCode) {
+                    case 37:      //left
+                        ax = -0.1;
+                        break;
+                    case 39:      //right
+                        ax = 0.1;
+                        break;
+                    case 38:      //up
+                        ay = -0.1;
+                        break;
+                    case 40:      //down
+                        ay = 0.1;
+                        break;
+                }
+            }, false);
+
+            window.addEventListener('keyup', function () {
+                ax = 0;
+                ay = 0;
+            }, false);
+
+            (function drawFrame () {
+                window.requestAnimationFrame(drawFrame, canvas);
+                context.clearRect(0, 0, canvas.width, canvas.height);
+
+                vx += ax;
+                vy += ay;
+                vy += gravity;
+                ball.x += vx;
+                ball.y += vy;
+                ball.draw(context);
+            }());
+        }
+    </script>
+</body>
+</html>
