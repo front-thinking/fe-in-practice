@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>skeleton</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        #canvas {
+            background-color: #000000;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="canvas" width="400" height="400"></canvas>
+    <script src="./../libs/utils.js"></script>
+    <script src="./../libs/ball.js"></script>
+    <script>
+        window.onload = function () {
+            // code goes here
+            var canvas = document.getElementById('canvas'),
+                context = canvas.getContext('2d'),
+                ball = new Ball(),
+                vx = Math.random() * 6 - 5,
+                vy = Math.random() * 6 - 5,
+                bounce = 0.7;
+
+            ball.x = canvas.width / 2;
+            ball.y = canvas.height / 2;
+
+            (function drawFrame () {
+                window.requestAnimationFrame(drawFrame, canvas);
+                context.clearRect(0, 0, canvas.width, canvas.height);
+
+                var left = 0,
+                    right = canvas.width,
+                    top = 0,
+                    bottom = canvas.height;
+
+                ball.x += vx;
+                ball.y += vy;
+
+                if (ball.x + ball.radius > right) {
+                    ball.x = right - ball.radius;
+                    vx *= -1 * bounce;
+                } else if (ball.x - ball.radius < left) {
+                    ball.x = left + ball.radius;
+                    vx *= -1 * bounce;
+                }
+                if (ball.y + ball.radius > bottom) {
+                    ball.y = bottom - ball.radius;
+                    vy *= -1 * bounce;
+                } else if (ball.y - ball.radius < top) {
+                    ball.y = top + ball.radius;
+                    vy *= -1 * bounce;
+                }
+                ball.draw(context);
+            }());
+        }
+    </script>
+</body>
+</html>
