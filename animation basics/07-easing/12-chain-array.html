@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>skeleton</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <canvas id="canvas" width="400" height="400"></canvas>
+    <textarea id="log"></textarea>
+    <script src="./../libs/utils.js"></script>
+    <script src="./../libs/ball.js"></script>
+    <script>
+        window.onload = function () {
+            // code goes here
+            var canvas = document.getElementById('canvas'),
+                context = canvas.getContext('2d'),
+                mouse = utils.captureMouse(canvas),
+                balls = [],
+                numBalls = 5,
+                spring = 0.03,
+                friction = 0.9,
+                gravity = 2;
+
+            while (numBalls--) {
+                balls.push(new Ball(20));
+            }
+
+            function move (ball, targetX, targetY) {
+                ball.vx += (targetX - ball.x) * spring;
+                ball.vy += (targetY - ball.y) * spring;
+                ball.vy += gravity;
+                ball.vx *= friction;
+                ball.vy *= friction;
+                ball.x += ball.vx;
+                ball.y += ball.vy;
+            }
+
+            function draw (ballB, i) {
+                //if first ball, move to mouse
+                if (i === 0) {
+                    move(ballB, mouse.x, mouse.y);
+                    context.moveTo(mouse.x, mouse.y);
+                } else {
+                    var ballA = balls[i-1];
+                    move(ballB, ballA.x, ballA.y);
+                    context.moveTo(ballA.x, ballA.y);
+                }
+                context.lineTo(ballB.x, ballB.y);
+                context.stroke();
+                ballB.draw(context);
+            }
+
+            (function drawFrame () {
+                window.requestAnimationFrame(drawFrame, canvas);
+                context.clearRect(0, 0, canvas.width, canvas.height);
+
+                context.beginPath();
+                balls.forEach(draw);
+            }());
+        }
+    </script>
+</body>
+</html>

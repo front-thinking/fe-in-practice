@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>skeleton</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <canvas id="canvas" width="400" height="400"></canvas>
+    <textarea id="log"></textarea>
+    <script src="./../libs/utils.js"></script>
+    <script src="./../libs/ball.js"></script>
+    <script>
+        window.onload = function () {
+            // code goes here
+            var canvas = document.getElementById('canvas'),
+                context = canvas.getContext('2d'),
+                log = document.getElementById('log'),
+                ball = new Ball(),
+                easing = 0.05,
+                targetX = canvas.width / 2,
+                animRequest;
+
+            ball.y = canvas.height / 2;
+
+            (function drawFrame () {
+                animRequest = window.requestAnimationFrame(drawFrame, canvas);
+                context.clearRect(0, 0, canvas.width, canvas.height);
+
+                var dx = targetX - ball.x;
+
+                if (Math.abs(dx) < 1) {
+                    ball.x = targetX;
+                    window.cancelRequestAnimationFrame(animRequest);
+                    log.value = "Animation done!";
+                } else {
+                    var vx = dx * easing;
+                    ball.x += vx;
+                }
+                ball.draw(context);
+            }());
+        }
+    </script>
+</body>
+</html>

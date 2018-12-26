@@ -10,6 +10,20 @@ if (!window.requestAnimationFrame) {
                                      });
 }
 
+/**
+ * Cancels an animation frame request.
+ * Checks for cross-browser support, falls back to clearTimeout.
+ * @param {number}  Animation frame request.
+ */
+if (!window.cancelRequestAnimationFrame) {
+    window.cancelRequestAnimationFrame = (window.cancelAnimationFrame ||
+        window.webkitCancelRequestAnimationFrame ||
+        window.mozCancelRequestAnimationFrame ||
+        window.msCancelRequestAnimationFrame ||
+        window.oCancelRequestAnimationFrame ||
+        window.clearTimeout);
+}
+
 utils.captureMouse = function (element) {
   var mouse = {x: 0, y: 0};
 
