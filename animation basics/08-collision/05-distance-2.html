@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>skeleton</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <canvas id="canvas" width="400" height="400"></canvas>
+    <textarea id="log"></textarea>
+    <script src="./../libs/utils.js"></script>
+    <script src="./../libs/ball.js"></script>
+    <script>
+        window.onload = function () {
+            // code goes here
+            var canvas = document.getElementById('canvas'),
+                context = canvas.getContext('2d'),
+                mouse = utils.captureMouse(canvas),
+                log = document.getElementById('log'),
+                ballA = new Ball(Math.random() * 100),
+                ballB = new Ball(Math.random() * 100);
+
+            ballA.x = canvas.width / 2;
+            ballA.y = canvas.height / 2;
+
+            canvas.addEventListener('mousemove', drawFrame, false);
+            drawFrame();
+
+            function drawFrame () {
+                context.clearRect(0, 0, canvas.width, canvas.height);
+
+                ballB.x = mouse.x;
+                ballB.y = mouse.y;
+
+                var dx = ballB.x - ballA.x,
+                    dy = ballB.y - ballA.y,
+                    dist = Math.sqrt(dx * dx + dy * dy);
+
+                if (dist < ballA.radius + ballB.radius) {
+                    log.value = "Hit!";
+                } else {
+                    log.value = '';
+                }
+                ballA.draw(context);
+                ballB.draw(context);
+            }
+        }
+    </script>
+</body>
+</html>
