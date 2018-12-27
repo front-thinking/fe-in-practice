@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>skeleton</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <canvas id="canvas" width="400" height="400"></canvas>
+    <textarea id="log"></textarea>
+    <script src="./../libs/utils.js"></script>
+    <script src="./../libs/ball.js"></script>
+    <script>
+        window.onload = function () {
+            // code goes here
+            var canvas = document.getElementById('canvas'),
+                context = canvas.getContext('2d'),
+                mouse = utils.captureMouse(canvas),
+                balls = [],
+                numBalls = 10,
+                vr = 0.05,
+                centerX = canvas.width / 2,
+                centerY = canvas.height / 2,
+                cos, sin; //accessible by move and drawFrame
+
+            for (var ball, i = 0; i < numBalls; i++) {
+                ball = new Ball();
+                ball.x = Math.random() * canvas.width;
+                ball.y = Math.random() * canvas.height;
+                balls.push(ball);
+            }
+
+            function move (ball) {
+                var x1 = ball.x - centerX,
+                    y1 = ball.y - centerY,
+                    x2 = cos * x1 - sin * y1,
+                    y2 = cos * y1 + sin * x1;
+                ball.x = centerX + x2;
+                ball.y = centerY + y2;
+            }
+
+            function draw (ball) {
+                ball.draw(context);
+            }
+
+            (function drawFrame () {
+                window.requestAnimationFrame(drawFrame, canvas);
+                context.clearRect(0, 0, canvas.width, canvas.height);
+
+                var angle = (mouse.x - centerX) * 0.0005;
+                cos = Math.cos(angle);
+                sin = Math.sin(angle);
+                balls.forEach(move);
+                balls.forEach(draw);
+            }());
+        }
+    </script>
+</body>
+</html>

@@ -7,14 +7,10 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>skeleton</title>
     <link rel="stylesheet" href="style.css">
-    <style>
-        #canvas {
-            background-color: #000000;
-        }
-    </style>
 </head>
 <body>
     <canvas id="canvas" width="400" height="400"></canvas>
+    <textarea id="log"></textarea>
     <script src="./../libs/utils.js"></script>
     <script src="./../libs/ball.js"></script>
     <script>
@@ -23,29 +19,27 @@
             var canvas = document.getElementById('canvas'),
                 context = canvas.getContext('2d'),
                 ball = new Ball(),
-                vx = Math.random() * 10 - 5,
-                vy = Math.random() * 10 - 5,
-                friction = 0.1;
+                vr = 0.05,
+                cos = Math.cos(vr),
+                sin = Math.sin(vr),
+                centerX = canvas.width / 2,
+                centerY = canvas.height / 2;
 
-            ball.x = canvas.width / 2;
-            ball.y = canvas.height / 2;
+            ball.x = Math.random() * canvas.width;
+            ball.y = Math.random() * canvas.height;
 
             (function drawFrame () {
                 window.requestAnimationFrame(drawFrame, canvas);
                 context.clearRect(0, 0, canvas.width, canvas.height);
 
-                var speed = Math.sqrt(vx * vx + vy * vy),
-                    angle = Math.atan2(vy, vx);
+                var x1 = ball.x - centerX,
+                    y1 = ball.y - centerY,
+                    x2 = cos * x1 - sin * y1,
+                    y2 = cos * y1 + sin * x1;
 
-                if (speed > friction) {
-                    speed -= friction;
-                } else {
-                    speed = 0;
-                }
-                vx = Math.cos(angle) * speed;
-                vy = Math.sin(angle) * speed;
-                ball.x += vx;
-                ball.y += vy;
+                ball.x = centerX + x2;
+                ball.y = centerY + y2;
+
                 ball.draw(context);
             }());
         }
