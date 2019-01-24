@@ -53,7 +53,12 @@ public class CrimeFragment extends Fragment {
         setHasOptionsMenu(true);
     }
 
-
+    @Override
+    public void onPause() {
+        super.onPause();
+        CrimeLab.get(getActivity())
+                .updateCrime(mCrime);
+    }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
