@@ -20,4 +20,9 @@
     <string name="crime_report_suspect">嫌疑人是 %s</string>
     <string name="crime_report_subject">crime处理情况报告</string>
     <string name="send_report">投诉方式</string>
+    <string name="crime_photo_button_description">拍摄</string>
+    <string name="crime_photo_no_image_description">
+        照片没拍摄呢
+    </string>
+    <string name="crime_photo_image_description">照片已拍摄</string>
 </resources>
