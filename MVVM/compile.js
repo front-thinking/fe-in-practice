@@ -101,10 +101,35 @@ CompileUtil = {
         let updaterFn = this.updater['textUpdater'];
         // {{message.a}}
         let value = this.getTextVal(vm, expr);
+        // {{a}} {{b}}
+        expr.replace(/\{\{([^}]+)\}\}/g, (...arguments) =>{
+            new Watcher(vm, arguments[1], ()=> {
+                // 如果数据变化了，文本节点需要重新获取依赖的数据更新文本中的内容
+                updaterFn && updaterFn(node, this.getTextVal(vm, expr));
+            });
+        });
         updaterFn && updaterFn(node, value);
+    },
+    setVal(vm, expr, value) {
+        expr = expr.split('.');
+        return expr.reduce((prev, next, currentIndex) => {
+            if (currentIndex === expr.length - 1) {
+                return prev[next] = value;
+            }
+            return prev[next];
+        }, vm.$data);
     },
     model(node, vm, expr) { // 输入框处理
         let updaterFn = this.updater['modelUpdater'];
+        // 这里应该加一个监控，数据变化了，应该调用watch的callback
+        new Watcher(vm, expr, (newValue)=>{
+            // 当值发生变化后，会调用callback，将新的值传递过来
+            updaterFn && updaterFn(node, newValue);
+        });
+        node.addEventListener('input', (e)=> {
+            let newValue = e.target.value;
+            this.setVal(vm, expr, newValue);
+        });
         updaterFn && updaterFn(node, this.getVal(vm, expr));
     },
     updater: {
