@@ -8,7 +8,7 @@ let vertualDom1 = createElement('ul', {class: 'list'}, [
 ]);
 let vertualDom2 = createElement('ul', {class: 'list-group'}, [
 	createElement('li', {class: 'item'}, ['2']),
-	createElement('li', {class: 'item'}, ['1']),
+	createElement('li', {class: 'item'}, ['1']),[]
 	createElement('div', {class: 'item'}, ['2'])
 ]);
 
