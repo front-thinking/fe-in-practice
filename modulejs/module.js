@@ -29,5 +29,10 @@ myRequire.resolve = (moduleName) => {
     return moduleName;
 };
 
-let str = myRequire('./test.js');
-console.log(str);
+// let str = myRequire('./test.js');
+// console.log(str);
+
+const a = myRequire('./a.js');
+const b = myRequire('./b.js');
+console.log(a);
+console.log(b);
